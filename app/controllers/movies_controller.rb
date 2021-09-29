@@ -14,9 +14,11 @@ class MoviesController < ApplicationController
       if @ratings_to_show == {}
         ratings_list = Hash[@all_ratings.map {|x| [x, 1]}]
       end      
+      session[:ratings]= @ratings_to_show
       # db query for selecting movies of given ratings
       @movies = Movie.with_ratings(ratings_list.keys)
       @clicked_header = params[:clicked_header]
+      session[:clicked_header] = @clicked_header
       #sort movies in order
       if @clicked_header == "title_header"
         @movies = @movies.order(:title)
