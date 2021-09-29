@@ -8,6 +8,7 @@ class MoviesController < ApplicationController
   
     def index
       @movies = Movie.all
+      @all_ratings = Movie.all_ratings 
       @clicked_header = params[:clicked_header]
       #sort movies in order
       if @clicked_header == "title_header"
