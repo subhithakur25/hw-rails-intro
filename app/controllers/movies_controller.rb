@@ -8,6 +8,14 @@ class MoviesController < ApplicationController
   
     def index
       @movies = Movie.all
+      @clicked_header = params[:clicked_header]
+      #sort movies in order
+      if @clicked_header == "title_header"
+        @movies = @movies.order(:title)
+      end
+      if @clicked_header == "release_date_header"
+        @movies = @movies.order(:release_date)
+      end      
     end
   
     def new
