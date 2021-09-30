@@ -11,10 +11,12 @@ class MoviesController < ApplicationController
       if params.has_key?(:ratings) && params[:ratings] != {} 
         @ratings_to_show = params[:ratings]
         session[:ratings] = @ratings_to_show
-      else
+      elsif session.has_key?(:ratings)
         @ratings_to_show = session[:ratings]
-      ratings_list = @ratings_to_show     
-      
+      else 
+        @ratings_to_show = {}
+      end
+      ratings_list = @ratings_to_show
       # if no rating is selected, show all ratings
       # if @ratings_to_show == {}
       #   ratings_list = Hash[@all_ratings.map {|x| [x, 1]}]
@@ -27,8 +29,11 @@ class MoviesController < ApplicationController
       if params.has_key?(:clicked_header) && params[:clicked_header] != {} 
         @clicked_header = params[:clicked_header]
         session[:clicked_header] = @clicked_header
-      else
-        @clicked_header = session[:clicked_header]      
+      elsif session.has_key?(:clicked_header)
+        @clicked_header = session[:clicked_header]  
+      else 
+        @clicked_header = {}
+      end
       
       # @clicked_header = params[:clicked_header]
       
