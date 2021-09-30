@@ -7,7 +7,7 @@
   <% @all_ratings.each do |rating| %>
     <div class="form-check  form-check-inline">
       <%= label_tag "ratings[#{rating}]" , rating, class: 'form-check-label'%>
-      <%= check_box_tag "ratings[#{rating}]", "1",  @ratings_to_show.include?(rating), id: "ratings_#{rating}", class: 'form-check-input'  %>
+      <%= check_box_tag "ratings[#{rating}]", "1",  session[:ratings_to_show].include?(rating), id: "ratings_#{rating}", class: 'form-check-input'  %>
     </div>
   <% end %>
   <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
@@ -15,13 +15,13 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th class=<%= "hilite" if @clicked_header == "title_header"%>>
+      <th class=<%= "hilite" if session[:clicked_header] == "title_header"%>>
         <a>
         <%= link_to "Movie Title", movies_path(:clicked_header => "title_header", :ratings => @ratings_to_show) %>
         </a>
        </th>
       <th>Rating</th>
-      <th class=<%= "hilite" if @clicked_header == "release_date_header"%>>
+      <th class=<%= "hilite" if session[:clicked_header] == "release_date_header"%>>
         <%= link_to "Release Date", movies_path(:clicked_header => "release_date_header", :ratings => @ratings_to_show) %>
        </th>
       <th>More Info</th>
