@@ -8,24 +8,39 @@ class MoviesController < ApplicationController
   
     def index
       @all_ratings = Movie.all_ratings 
+      
+      @is_ratings_to_show_filled = true
       if params.has_key?(:ratings) && params[:ratings] != {} 
         @ratings_to_show = params[:ratings]
         session[:ratings] = @ratings_to_show
+        @is_ratings_to_show_filled = false
       elsif session.has_key?(:ratings)
         @ratings_to_show = session[:ratings]
       else 
         @ratings_to_show = Hash[@all_ratings.map {|x| [x, 1]}]
       end
+      
       ratings_list = @ratings_to_show
+      
       @movies = Movie.with_ratings(ratings_list.keys)
-      if params.has_key?(:clicked_header) && params[:clicked_header] != {} 
+      
+      @is_clicked_header_filled = true
+      if params.has_key?(:clicked_header) 
         @clicked_header = params[:clicked_header]
         session[:clicked_header] = @clicked_header
+        @is_clicked_header_filled = false
       elsif session.has_key?(:clicked_header)
         @clicked_header = session[:clicked_header]  
       else 
         @clicked_header = {}
+        # to avoid redirecting again and again since clicked_header will be an empty param
+        @is_clicked_header_filled = false
       end
+      
+      if @is_ratings_to_show_filled == true || @is_clicked_header_filled == true
+        redirect_to :clicked_header => @clicked_header, :ratings => @ratings_to_show and return
+      end
+      
       if @clicked_header == "title_header"
         @movies = @movies.order(:title)
       end
