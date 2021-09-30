@@ -8,6 +8,6 @@
   <%= label :movie, :release_date, 'Released On', :class => 'col-form-label'  %>
   <%= date_select :movie, :release_date, {}, :class => 'form-control col-2 d-inline' %>
   <br/>
-  <%= submit_tag 'Save Changes', movies_path(:ratings => session[:ratings], :clicked_header => session[:clicked_header]), :class => 'btn btn-primary' %>
+  <%= submit_tag 'Save Changes', :class => 'btn btn-primary' %>
   <%= link_to 'Cancel', movies_path(:ratings => session[:ratings], :clicked_header => session[:clicked_header]), :class => 'btn btn-secondary' %>
 <% end %>
