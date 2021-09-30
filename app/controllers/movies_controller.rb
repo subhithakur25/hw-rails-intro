@@ -8,18 +8,33 @@ class MoviesController < ApplicationController
   
     def index
       @all_ratings = Movie.all_ratings 
-      @ratings_to_show = params[:ratings] || {} 
+      if params.has_key?(:ratings) && params[:ratings] != {} 
+        @ratings_to_show = params[:ratings]
+        session[:ratings] = @ratings_to_show
+      else
+        @ratings_to_show = session[:ratings]
       ratings_list = @ratings_to_show     
+      
       # if no rating is selected, show all ratings
-      if @ratings_to_show == {}
-        ratings_list = Hash[@all_ratings.map {|x| [x, 1]}]
-      end      
-      session[:ratings]= @ratings_to_show
+      # if @ratings_to_show == {}
+      #   ratings_list = Hash[@all_ratings.map {|x| [x, 1]}]
+      # end      
+      
+      # session[:ratings]= @ratings_to_show
+      
       # db query for selecting movies of given ratings
       @movies = Movie.with_ratings(ratings_list.keys)
-      @clicked_header = params[:clicked_header]
-      session[:clicked_header] = @clicked_header
+      if params.has_key?(:clicked_header) && params[:clicked_header] != {} 
+        @clicked_header = params[:clicked_header]
+        session[:clicked_header] = @clicked_header
+      else
+        @clicked_header = session[:clicked_header]      
+      
+      # @clicked_header = params[:clicked_header]
+      
+      # session[:clicked_header] = @clicked_header
       #sort movies in order
+      
       if @clicked_header == "title_header"
         @movies = @movies.order(:title)
       end
